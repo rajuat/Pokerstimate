@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center"
+    tools:context="com.itservz.android.pokerstimate.CardFragment">
+
+    <com.itservz.android.pokerstimate.widgets.CardView
+        android:id="@+id/card"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/card_big_width"
+        android:layout_height="@dimen/card_big_height"/>
+
+</LinearLayout>
