@@ -2,6 +2,7 @@ package com.itservz.android.pokerstimate.drawables;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -26,20 +27,13 @@ public class PokerDrawable extends Drawable {
     private String text;
 
     public PokerDrawable(Context context, String text, boolean fullScreen) {
-        int bitmapWidth = 0;
-        int bitmapHeight = 0;
-        int textSize = 0;
-        if(fullScreen){
-            bitmapHeight = context.getResources().getDimensionPixelSize(R.dimen.card_big_height);
-            bitmapWidth = context.getResources().getDimensionPixelSize(R.dimen.card_big_width);
-            textSize = context.getResources().getDimensionPixelSize(R.dimen.card_big_text_size);
-        } else {
-            bitmapHeight = context.getResources().getDimensionPixelSize(R.dimen.card_small_height);
-            bitmapWidth = context.getResources().getDimensionPixelSize(R.dimen.card_small_width);
-            textSize = context.getResources().getDimensionPixelSize(R.dimen.card_small_text_size);
-        }
         BitmapShader shader;
-        Bitmap bitmap = Bitmap.createBitmap(bitmapWidth, bitmapHeight, Bitmap.Config.ARGB_8888);
+        Bitmap bitmap;
+        if(fullScreen){
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.card14_big);
+        } else {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.card14_small);
+        }
         shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         paint = new Paint();
         paint.setAntiAlias(true);
@@ -50,13 +44,13 @@ public class PokerDrawable extends Drawable {
 
         textPaint = new TextPaint();
         textPaint.setColor(Color.BLACK);
-        textPaint.setTextSize(textSize);
         textPaint.setTypeface(MyFont.getTypeface());
-        //textPaint.setFakeBoldText(true);
+        textPaint.setFakeBoldText(true);
         textPaint.setAntiAlias(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            textPaint.setLetterSpacing(0.5f);
-        }
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.d("PokerDrawable", ""+Build.VERSION.SDK_INT);
+            textPaint.setLetterSpacing(-0.1f);
+        }*/
         textPaint.setTextAlign(Paint.Align.CENTER);
     }
 
@@ -65,9 +59,10 @@ public class PokerDrawable extends Drawable {
         int height = getBounds().height();
         int width = getBounds().width();
         Rect textBounds = new Rect();
+        textPaint.setTextSize(height*2/5);
         textPaint.getTextBounds(text, 0, text.length(), textBounds);
         int textHeight = textBounds.height();
-        Log.d("PokerDrawable", "text height " + textHeight);
+        int textWidth = textBounds.width();
         RectF rect = new RectF(0.0f, 0.0f, width, height);
         canvas.drawRoundRect(rect, 30, 30, paint);
         canvas.drawText(text, width/2, height/2 + textHeight/2, textPaint);
