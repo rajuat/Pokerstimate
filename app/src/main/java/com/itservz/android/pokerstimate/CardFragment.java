@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.itservz.android.pokerstimate.model.CardViewModel;
+import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 import com.itservz.android.pokerstimate.widgets.CardView;
 
 import butterknife.ButterKnife;
@@ -39,6 +40,16 @@ public class CardFragment extends Fragment {
     private CardViewModel storedModel;
     private OnCardStatusChangeListener listener;
     private CardView.OnCardStatusChangeListener cardStatusChangeListener;
+    private ShakeDetector mShakeDetector;
+
+    public ShakeDetector getShakeDetector() {
+        return mShakeDetector;
+    }
+
+    public void setShakeDetector(ShakeDetector mShakeDetector) {
+        this.mShakeDetector = mShakeDetector;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +87,7 @@ public class CardFragment extends Fragment {
         }
         cardView.setCard(storedModel);
         cardView.setOnCardViewStatusChangeListener(cardStatusChangeListener);
+        cardView.setShakeDetector(mShakeDetector);
     }
 
     @Override

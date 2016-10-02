@@ -1,5 +1,8 @@
 package com.itservz.android.pokerstimate;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +21,7 @@ import android.widget.ListView;
 
 import com.itservz.android.pokerstimate.core.Dealer;
 import com.itservz.android.pokerstimate.core.DealerFactory;
+import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 
 import java.util.Locale;
 
@@ -27,6 +31,7 @@ import butterknife.OnClick;
 
 public class CardListFragment extends Fragment {
     private static final String TAG_LOG = "CardListFragment";
+    private ShakeDetector mShakeDetector;
 
     @InjectView(R.id.pager)
     ViewPager viewPager;
@@ -58,14 +63,13 @@ public class CardListFragment extends Fragment {
                 drawerLayout.openDrawer(drawerList);
             }
         });
-
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         final Dealer dealer = DealerFactory.newInstance();
-        CardsPagerAdapter cardsPagerAdapter = new CardsPagerAdapter(getActivity(), getFragmentManager(), dealer);
+        CardsPagerAdapter cardsPagerAdapter = new CardsPagerAdapter(getActivity(), getFragmentManager(), dealer, mShakeDetector);
         this.viewPager.setAdapter(cardsPagerAdapter);
     }
 
@@ -132,5 +136,9 @@ public class CardListFragment extends Fragment {
             getActivity().setTitle(planet);
             return rootView;
         }
+    }
+
+    public void setShakeDetector(ShakeDetector mShakeDetector) {
+        this.mShakeDetector = mShakeDetector;
     }
 }

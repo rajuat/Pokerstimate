@@ -14,6 +14,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.itservz.android.pokerstimate;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
@@ -22,6 +25,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import com.itservz.android.pokerstimate.fonts.MyFont;
+import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 
 public class MainActivity extends FragmentActivity {
     private static final String TAG_LOG = "MainActivity";
@@ -29,14 +33,35 @@ public class MainActivity extends FragmentActivity {
     private static final String TAG_CARD_GRID_FRAGMENT = "CardGridFragment";
     private CardListFragment cardListFragment;
     private CardGridFragment cardGridFragment;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG_LOG, "onCreate");
-        initializeFragments();
         MyFont.initiazedFont(getApplicationContext());
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        initializeFragments();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+    }
+
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
     }
 
     private void initializeFragments() {
@@ -49,6 +74,7 @@ public class MainActivity extends FragmentActivity {
                 getSupportFragmentManager().findFragmentByTag(TAG_CARD_LIST_FRAGMENT);
         if (cardListFragment == null) {
             cardListFragment = CardListFragment.newInstance();
+            cardListFragment.setShakeDetector(mShakeDetector);
             getSupportFragmentManager()
                     .beginTransaction()
                     .add(R.id.content_layout, cardListFragment, TAG_CARD_LIST_FRAGMENT)

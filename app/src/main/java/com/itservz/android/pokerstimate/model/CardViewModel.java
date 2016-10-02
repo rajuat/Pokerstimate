@@ -8,7 +8,6 @@ import com.itservz.android.pokerstimate.drawables.PokerDrawable;
 import java.io.Serializable;
 
 public class CardViewModel implements Serializable {
-    //TODO private int upwardResourceId;
     private PokerDrawable upwardResourceId;
     private int downwardResourceId;
     private CardStatus status;

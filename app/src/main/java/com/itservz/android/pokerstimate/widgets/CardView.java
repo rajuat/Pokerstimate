@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.itservz.android.pokerstimate.model.CardViewModel;
+import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 
 public class CardView extends FrameLayout {
 
@@ -44,7 +45,7 @@ public class CardView extends FrameLayout {
     private Animator currentAnimator;
     private OnCardStatusChangeListener listener;
     private int animationDuration = FLIP_ANIMATION_DURATION;
-
+    private ShakeDetector mShakeDetector;
     //endregion
 
     //region "LISTENERS"
@@ -121,6 +122,17 @@ public class CardView extends FrameLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         renderCard();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+            @Override
+            public void onShake(int count) {
+                if (cardStatus == CardViewModel.CardStatus.UPWARDS) {
+                    hideCard();
+                } else {
+                    revealCard();
+                }
+            }
+        });
+
     }
 
     //endregion
@@ -262,6 +274,14 @@ public class CardView extends FrameLayout {
 
     private Drawable getDrawable(int resourceId) {
         return getResources().getDrawable(resourceId);
+    }
+
+    public ShakeDetector getShakeDetector() {
+        return mShakeDetector;
+    }
+
+    public void setShakeDetector(ShakeDetector mShakeDetector) {
+        this.mShakeDetector = mShakeDetector;
     }
 
     //endregion
