@@ -12,9 +12,9 @@ public enum Card {
     TWENTY("20"),
     FORTY("40"),
     HUNDRED("100"),
-    INFINITE("-1"),
+    INFINITE("XXL"),
     UNKNOWN("?"),
-    BREAK("-");
+    BREAK("SML");
 
     private final String value;
 

@@ -18,7 +18,6 @@ public class MyFont {
 
     public static Typeface getTypeface() {
         if (typeface != null) {
-            Log.d("MyFont", typeface.toString());
             return typeface;
         } else {
             return Typeface.create("Arail", Typeface.BOLD);

@@ -20,7 +20,9 @@ import android.util.Log;
 import com.itservz.android.pokerstimate.R;
 import com.itservz.android.pokerstimate.fonts.MyFont;
 
-public class PokerDrawable extends Drawable {
+import java.io.Serializable;
+
+public class PokerDrawable extends Drawable implements Serializable{
 
     private final TextPaint textPaint;
     private Paint paint;

@@ -15,11 +15,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package com.itservz.android.pokerstimate;
 
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.widget.ListView;
 
 import com.itservz.android.pokerstimate.fonts.MyFont;
 
 public class MainActivity extends FragmentActivity {
+    private static final String TAG_LOG = "MainActivity";
     private static final String TAG_CARD_LIST_FRAGMENT = "CardListFragment";
     private static final String TAG_CARD_GRID_FRAGMENT = "CardGridFragment";
     private CardListFragment cardListFragment;
@@ -28,7 +33,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout. activity_main);
+        setContentView(R.layout.activity_main);
+        Log.d(TAG_LOG, "onCreate");
         initializeFragments();
         MyFont.initiazedFont(getApplicationContext());
     }
