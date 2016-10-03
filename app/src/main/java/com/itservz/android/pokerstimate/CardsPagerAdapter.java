@@ -93,8 +93,8 @@ public class CardsPagerAdapter extends FragmentPagerAdapter {
     }
 
     private PokerDrawable getUpwardResourceId(int position) {
-        Card card = dealer.getCardAtPosition(position);
-        PokerDrawable upwardResourceId = new PokerDrawable(context, card.getValue(), true);
+        String card = dealer.getCardAtPosition(position);
+        PokerDrawable upwardResourceId = new PokerDrawable(context, card, true);
         return upwardResourceId;
     }
 

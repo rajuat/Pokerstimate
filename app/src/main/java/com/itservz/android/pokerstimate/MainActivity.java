@@ -18,11 +18,13 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.itservz.android.pokerstimate.fonts.MyFont;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
@@ -54,7 +56,7 @@ public class MainActivity extends FragmentActivity {
     public void onResume() {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -106,4 +108,32 @@ public class MainActivity extends FragmentActivity {
                 .addToBackStack(null)
                 .commit();
     }
+
+    private boolean doubleBackToExitPressedOnce;
+
+    @Override
+    public void onBackPressed() {
+
+        if (cardListFragment.isNavDrawerOpen()) {
+            cardListFragment.closeNavDrawer();
+        } else {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        }
+    }
+
+
 }

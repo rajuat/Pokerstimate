@@ -1,9 +1,9 @@
 package com.itservz.android.pokerstimate;
 
-import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -41,7 +42,8 @@ public class CardListFragment extends Fragment {
     }
 
     private DrawerLayout drawerLayout = null;
-    private ListView drawerList = null;
+    private NavigationView drawerList = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,14 +51,11 @@ public class CardListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_card_list, container, false);
         ButterKnife.inject(this, view);
 
-
         ImageButton button = (ImageButton) view.findViewById(R.id.drawer_settings);
-        String[] planetTitles = getResources().getStringArray(R.array.planets_array);
         drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        drawerList = (ListView) getActivity().findViewById(R.id.left_drawer);
-        drawerList.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.drawer_list_item, planetTitles));
-        drawerList.setOnItemClickListener(new DrawerItemClickListener());
+        drawerList = (NavigationView) getActivity().findViewById(R.id.left_drawer);
+        drawerList.setNavigationItemSelectedListener(new DrawerItemSelectedListener());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,9 +65,24 @@ public class CardListFragment extends Fragment {
         return view;
     }
 
+    protected boolean isNavDrawerOpen() {
+        return drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START);
+    }
+
+    protected void closeNavDrawer() {
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        final Dealer dealer = DealerFactory.newInstance();
+        Log.d(TAG_LOG, "onViewCreated");
+        viewCreated();
+    }
+
+    private void viewCreated() {
+        final Dealer dealer = DealerFactory.newInstance(getContext());
         CardsPagerAdapter cardsPagerAdapter = new CardsPagerAdapter(getActivity(), getFragmentManager(), dealer, mShakeDetector);
         this.viewPager.setAdapter(cardsPagerAdapter);
     }
@@ -83,6 +97,37 @@ public class CardListFragment extends Fragment {
         viewPager.setCurrentItem(position, true);
     }
 
+    private class DrawerItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
+        String poker = "deckPreference";
+
+        @Override
+        public boolean onNavigationItemSelected(MenuItem item) {
+            Log.d(TAG_LOG, "onNavigationItemSelected");
+            SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+            SharedPreferences.Editor editor = mPreferences.edit();
+            int id = item.getItemId();
+            item.setChecked(true);
+            if (id == R.id.nav_standard_poker) {
+                Log.d(TAG_LOG, "onNavigationItemSelected Standard");
+                editor.putString(poker, "0");
+                editor.commit();
+                reload(id);
+            } else if(id == R.id.nav_fibonacci_poker){
+                Log.d(TAG_LOG, "onNavigationItemSelected Fibonacci");
+                editor.putString(poker, "1");
+                editor.commit();
+                reload(id);
+            }
+            return true;
+        }
+    }
+
+    private void reload(int id) {
+        drawerLayout.closeDrawer(drawerList);
+        viewCreated();
+        ((MainActivity) getActivity()).showGridFragment();
+        drawerList.setCheckedItem(id);
+    }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
@@ -93,9 +138,9 @@ public class CardListFragment extends Fragment {
 
     private void selectItem(int position) {
         Log.d(TAG_LOG, "selectItem");
-        drawerLayout.setDrawerListener( new DrawerLayout.SimpleDrawerListener(){
+        drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
-            public void onDrawerClosed(View drawerView){
+            public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
 
             }
@@ -108,7 +153,7 @@ public class CardListFragment extends Fragment {
         fragmentManager.beginTransaction().commit();
 
 
-        drawerList.setItemChecked(position, true);
+        drawerList.setCheckedItem(position);
         drawerLayout.closeDrawer(drawerList);
     }
 
@@ -141,4 +186,5 @@ public class CardListFragment extends Fragment {
     public void setShakeDetector(ShakeDetector mShakeDetector) {
         this.mShakeDetector = mShakeDetector;
     }
+
 }

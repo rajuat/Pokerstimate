@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Choose Poker">
+        <group android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_standard_poker"
+                android:icon="@drawable/ic_button_main"
+                android:title="Standard" />
+            <item
+                android:id="@+id/nav_fibonacci_poker"
+                android:icon="@drawable/ic_button_main"
+                android:title="Fibonacci Numbers" />
+            <item
+                android:id="@+id/nav_tshirt_poker"
+                android:icon="@drawable/ic_button_main"
+                android:title="T-Shirt Sizes" />
+
+        </group>
+    </item>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_button_main"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_info"
+                android:icon="@drawable/ic_button_main"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>
