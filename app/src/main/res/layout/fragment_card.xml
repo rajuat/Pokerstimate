@@ -11,7 +11,8 @@
     <com.itservz.android.pokerstimate.widgets.CardView
         android:id="@+id/card"
         android:layout_gravity="center"
-        android:layout_width="@dimen/card_big_width"
-        android:layout_height="@dimen/card_big_height"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

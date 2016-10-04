@@ -85,6 +85,7 @@ public class CardFragment extends Fragment {
         if (storedModel == null) {
             storedModel = new CardViewModel(getActivity(), true);
         }
+
         cardView.setCard(storedModel);
         cardView.setOnCardViewStatusChangeListener(cardStatusChangeListener);
         cardView.setShakeDetector(mShakeDetector);

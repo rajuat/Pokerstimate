@@ -4,16 +4,4 @@
     <string name="legend">LEGEND</string>
     <string name="cover">COVER</string>
     <string name="title_activity_settings">Settings</string>
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
-    <string name="sequence_settings">Card Sequence</string>
-    <string name="sequence_settings_summary">Change the sequence of the cards in the deck</string>
 </resources>

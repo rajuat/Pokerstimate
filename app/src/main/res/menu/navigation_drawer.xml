@@ -1,21 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:title="Choose Poker">
-        <group android:checkableBehavior="single">
-            <item
-                android:id="@+id/nav_standard_poker"
-                android:icon="@drawable/ic_button_main"
-                android:title="Standard" />
-            <item
-                android:id="@+id/nav_fibonacci_poker"
-                android:icon="@drawable/ic_button_main"
-                android:title="Fibonacci Numbers" />
-            <item
-                android:id="@+id/nav_tshirt_poker"
-                android:icon="@drawable/ic_button_main"
-                android:title="T-Shirt Sizes" />
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_standard_poker"
+                    android:icon="@drawable/ic_button_main"
+                    android:title="Standard" />
+                <item
+                    android:id="@+id/nav_fibonacci_poker"
+                    android:icon="@drawable/ic_button_main"
+                    android:title="Fibonacci Numbers" />
+                <item
+                    android:id="@+id/nav_tshirt_poker"
+                    android:icon="@drawable/ic_button_main"
+                    android:title="T-Shirt Sizes" />
 
-        </group>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/nav_shake"
+                android:icon="@drawable/ic_button_main"
+                android:title="Shake to reveal" />
+        </menu>
     </item>
 
     <item android:title="Communicate">
@@ -27,7 +39,7 @@
             <item
                 android:id="@+id/nav_info"
                 android:icon="@drawable/ic_button_main"
-                android:title="Send" />
+                android:title="Rate" />
         </menu>
     </item>
 

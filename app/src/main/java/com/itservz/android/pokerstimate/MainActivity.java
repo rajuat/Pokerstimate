@@ -20,9 +20,11 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ public class MainActivity extends FragmentActivity {
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+    private boolean doubleBackToExitPressedOnce;
+    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +60,13 @@ public class MainActivity extends FragmentActivity {
     public void onResume() {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
-        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        //mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
     public void onPause() {
         // Add the following line to unregister the Sensor Manager onPause
-        mSensorManager.unregisterListener(mShakeDetector);
+        //mSensorManager.unregisterListener(mShakeDetector);
         super.onPause();
     }
 
@@ -99,6 +103,7 @@ public class MainActivity extends FragmentActivity {
 
     public void showListFragment() {
         getSupportFragmentManager().popBackStack();
+        Log.d(TAG_LOG, "showListFragment " + getSupportFragmentManager().getBackStackEntryCount());
     }
 
     public void showGridFragment() {
@@ -107,31 +112,35 @@ public class MainActivity extends FragmentActivity {
                 .show(cardGridFragment)
                 .addToBackStack(null)
                 .commit();
+        Log.d(TAG_LOG, "showGridFragment " + getSupportFragmentManager().getBackStackEntryCount());
     }
-
-    private boolean doubleBackToExitPressedOnce;
 
     @Override
     public void onBackPressed() {
-
-        if (cardListFragment.isNavDrawerOpen()) {
-            cardListFragment.closeNavDrawer();
-        } else {
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                return;
-            }
-
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
+        // When the user is at grid or drawer, simply close it - otherwise close the app in double back press
+        final Fragment currentFragement = getSupportFragmentManager().findFragmentById(R.id.content_layout);
+        if (currentFragement instanceof CardGridFragment) {
+            super.onBackPressed();
+        } else if (currentFragement instanceof CardListFragment) {
+            if (cardListFragment.isNavDrawerOpen()) {
+                cardListFragment.closeNavDrawer();
+            } else {
+                if (doubleBackToExitPressedOnce) {
+                    super.onBackPressed();
+                    return;
                 }
-            }, 2000);
+
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            }
         }
     }
 
