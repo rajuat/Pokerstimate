@@ -20,25 +20,27 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.itservz.android.pokerstimate.model.CardStatus;
 import com.itservz.android.pokerstimate.model.CardViewModel;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 
 public class CardView extends FrameLayout {
 
     public interface OnCardStatusChangeListener {
-        void onCardStatusChange(CardView view, CardViewModel card, CardViewModel.CardStatus newStatus);
+        void onCardStatusChange(CardView view, CardViewModel card, CardStatus newStatus);
     }
 
     //region "PRIVATE VARIABLES"
 
     private final static int FLIP_ANIMATION_DURATION = 200;
 
-    private CardViewModel.CardStatus cardStatus;
+    private CardStatus cardStatus;
     private CardViewModel card;
     private ImageView upwardView;
     private ImageView downwardView;
@@ -53,7 +55,7 @@ public class CardView extends FrameLayout {
     private OnClickListener onCardClick = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (cardStatus == CardViewModel.CardStatus.UPWARDS) {
+            if (cardStatus == CardStatus.UPWARDS) {
                 hideCard();
             } else {
                 revealCard();
@@ -70,8 +72,8 @@ public class CardView extends FrameLayout {
     }
 
     public void revealCard() {
-        if (cardStatus == CardViewModel.CardStatus.DOWNWARDS) {
-            this.cardStatus = CardViewModel.CardStatus.UPWARDS;
+        if (cardStatus == CardStatus.DOWNWARDS) {
+            this.cardStatus = CardStatus.UPWARDS;
             startDiscoverCardAnimation();
             if (listener != null) {
                 listener.onCardStatusChange(this, card, cardStatus);
@@ -80,8 +82,8 @@ public class CardView extends FrameLayout {
     }
 
     public void hideCard() {
-        if (cardStatus == CardViewModel.CardStatus.UPWARDS) {
-            this.cardStatus = CardViewModel.CardStatus.DOWNWARDS;
+        if (cardStatus == CardStatus.UPWARDS) {
+            this.cardStatus = CardStatus.DOWNWARDS;
             startHideCardAnimation();
             if (listener != null) {
                 listener.onCardStatusChange(this, card, cardStatus);
@@ -90,9 +92,14 @@ public class CardView extends FrameLayout {
     }
 
     public void setCard(CardViewModel card) {
-        this.card = card;
-        this.cardStatus = card.getStatus();
-        renderCard();
+        if(card != null) {
+            Log.d("CardView", card.getUpwardResourceId().getText());
+            this.card = card;
+            this.cardStatus = card.getStatus();
+            renderCard();
+        } else {
+            Log.d("CardView", "null");
+        }
     }
 
     //endregion
@@ -122,7 +129,7 @@ public class CardView extends FrameLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         renderCard();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+        /*mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake(int count) {
                 if (cardStatus == CardViewModel.CardStatus.UPWARDS) {
@@ -131,7 +138,7 @@ public class CardView extends FrameLayout {
                     revealCard();
                 }
             }
-        });
+        });*/
 
     }
 
@@ -257,10 +264,12 @@ public class CardView extends FrameLayout {
             upwardView.setImageDrawable(getUpwardDrawable());
             downwardView.setImageDrawable(getDownwardDrawable());
         }
-        if (card.getStatus() == CardViewModel.CardStatus.UPWARDS) {
-            upwardView.bringToFront();
-        } else {
-            downwardView.bringToFront();
+        if(card != null) {
+            if (card.getStatus() == CardStatus.UPWARDS) {
+                upwardView.bringToFront();
+            } else {
+                downwardView.bringToFront();
+            }
         }
     }
 

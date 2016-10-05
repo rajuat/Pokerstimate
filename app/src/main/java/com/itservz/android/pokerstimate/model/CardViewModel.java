@@ -12,10 +12,10 @@ public class CardViewModel implements Serializable {
     private int downwardResourceId;
     private CardStatus status;
 
-    public CardViewModel(Context context, boolean fullScreen) {
+    public CardViewModel(Context context, boolean fullScreen, String text) {
         this.status = CardStatus.UPWARDS;
         this.downwardResourceId = R.drawable.cover_big;
-        this.upwardResourceId = new PokerDrawable(context, "1", fullScreen);
+        this.upwardResourceId = new PokerDrawable(context, text, fullScreen);
     }
 
     public int getDownwardResourceId() { return downwardResourceId; }
@@ -36,8 +36,5 @@ public class CardViewModel implements Serializable {
         this.status = status;
     }
 
-    public enum CardStatus {
-        UPWARDS,
-        DOWNWARDS
-    }
+
 }

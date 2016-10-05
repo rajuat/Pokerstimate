@@ -1,42 +1,50 @@
 package com.itservz.android.pokerstimate.core;
 
+import com.itservz.android.pokerstimate.model.CardStatus;
+
 import java.util.List;
 
 public class Dealer {
-    private final List<String> deck;
-    private DeckStatus deckStatus;
+    private final List<String> card;
+    private CardStatus cardStatus;
+    private String type;
 
-    Dealer(List<String> deck) {
-        this.deck = deck;
-        this.deckStatus = DeckStatus.UPWARDS;
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+    Dealer(List<String> card) {
+        this.card = card;
+        this.cardStatus = CardStatus.UPWARDS;
     }
 
     public int getDeckLength() {
-        return deck.size();
+        return card.size();
     }
 
-    public DeckStatus getDeckStatus() {
-        return deckStatus;
+    public CardStatus getCardStatus() {
+        return cardStatus;
     }
 
     public void flipDeck() {
-        switch (deckStatus) {
+        switch (cardStatus) {
             case UPWARDS:
-                deckStatus = DeckStatus.DOWNWARDS;
+                cardStatus = CardStatus.DOWNWARDS;
                 break;
             case DOWNWARDS:
-                deckStatus = DeckStatus.UPWARDS;
+                cardStatus = CardStatus.UPWARDS;
                 break;
         }
     }
 
     public String getCardAtPosition(int position) {
-        return deck.get(position);
+        return card.get(position);
     }
 
-    public enum DeckStatus {
-        UPWARDS,
-        DOWNWARDS
-    }
 
 }

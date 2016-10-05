@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.itservz.android.pokerstimate.core.Dealer;
 import com.itservz.android.pokerstimate.drawables.PokerDrawable;
+import com.itservz.android.pokerstimate.model.CardStatus;
 import com.itservz.android.pokerstimate.model.CardViewModel;
 
 import java.util.ArrayList;
@@ -30,10 +31,10 @@ public class CardsGridAdapter extends BaseAdapter {
         int count = dealer.getDeckLength();
         for(int index = 0; index < count; index++) {
             PokerDrawable upwardResourceId = getUpwardResourceId(index);
-            CardViewModel cardViewModel = new CardViewModel(context, false);
-            cardViewModel.setDownwardResourceId(R.drawable.cover_big);
-            cardViewModel.setUpwardResourceId(upwardResourceId);
-            cardViewModel.setStatus(CardViewModel.CardStatus.UPWARDS);
+            CardViewModel cardViewModel = new CardViewModel(context, false, dealer.getCardAtPosition(index));
+            /*cardViewModel.setDownwardResourceId(R.drawable.cover_big);
+            cardViewModel.setUpwardResourceId(upwardResourceId);*/
+            cardViewModel.setStatus(CardStatus.UPWARDS);
             cardViewModelList.add(cardViewModel);
         }
     }

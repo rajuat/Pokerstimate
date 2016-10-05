@@ -48,12 +48,12 @@ public class CardGridFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Dealer dealer = DealerFactory.newInstance(getContext());
+        Dealer dealer = DealerFactory.newInstance(getActivity());
         CardsGridAdapter adapter = new CardsGridAdapter(getActivity(), dealer);
         list.setAdapter(adapter);
     }
 
-    @OnItemClick(com.itservz.android.pokerstimate.R.id.list) @SuppressWarnings("unused")
+    @OnItemClick(R.id.list) @SuppressWarnings("unused")
     public void onItemClick(int position) {
         ((MainActivity)getActivity()).selectCard(position);
         ((MainActivity)getActivity()).showListFragment();

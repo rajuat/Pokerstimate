@@ -1,7 +1,6 @@
 package com.itservz.android.pokerstimate;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.itservz.android.pokerstimate.core.Dealer;
@@ -31,35 +29,33 @@ import butterknife.OnClick;
 
 public class CardListFragment extends Fragment {
     private static final String TAG_LOG = "CardListFragment";
-    final String COMPANY_NAME = "COMPANY_NAME";
-    final String TEAM_NAME = "TEAM_NAME";
-    final String DECK_PREFERENCE = "deckPreference";
     private ShakeDetector mShakeDetector;
-
-    @InjectView(R.id.pager)
+    private DrawerLayout drawerLayout = null;
+    private NavigationView drawerNavigationView = null;
     ViewPager viewPager;
+
+    //@InjectView(R.id.pager)
 
     public static CardListFragment newInstance() {
         return new CardListFragment();
     }
 
-    private DrawerLayout drawerLayout = null;
-    private NavigationView drawerNavigationView = null;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG_LOG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_card_list, container, false);
+        viewPager = (ViewPager) view.findViewById(R.id.pager);
         ButterKnife.inject(this, view);
-        final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+        //drawer starts
+        final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         ImageView button = (ImageView) view.findViewById(R.id.drawer_settings);
         drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         drawerNavigationView = (NavigationView) getActivity().findViewById(R.id.left_drawer);
         View headerView = drawerNavigationView.getHeaderView(0);
 
-        int deckPref = Integer.parseInt(mPreferences.getString("deckPreference", "0"));
+        int deckPref = Integer.parseInt(mPreferences.getString(Preferences.DECK_PREFERENCE.name(), "0"));
         if(deckPref == 0){
             drawerNavigationView.setCheckedItem(R.id.nav_standard_poker);
         } else if(deckPref == 1){
@@ -76,8 +72,8 @@ public class CardListFragment extends Fragment {
 
         TextInputEditText companyName = (TextInputEditText) headerView.findViewById(R.id.company_name);
         final TextInputEditText teamName = (TextInputEditText) headerView.findViewById(R.id.team_name);
-        companyName.setText(mPreferences.getString(COMPANY_NAME, ""));
-        teamName.setText(mPreferences.getString(TEAM_NAME, ""));
+        companyName.setText(mPreferences.getString(Preferences.COMPANY_NAME.name(), ""));
+        teamName.setText(mPreferences.getString(Preferences.TEAM_NAME.name(), ""));
 
         teamName.setOnFocusChangeListener(new FocusChangeListener());
 
@@ -88,7 +84,14 @@ public class CardListFragment extends Fragment {
                 drawerLayout.openDrawer(drawerNavigationView);
             }
         });
+        //drawer ends
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        Log.d(TAG_LOG, "onViewCreated");
+        viewCreated();
     }
 
     private class FocusChangeListener implements View.OnFocusChangeListener {
@@ -98,9 +101,9 @@ public class CardListFragment extends Fragment {
             SharedPreferences.Editor editor = mPreferences.edit();
             if(!hasFocus) {
                 if(v.getId() == R.id.company_name) {
-                    editor.putString(COMPANY_NAME, ((TextInputEditText) v).getText().toString());
+                    editor.putString(Preferences.COMPANY_NAME.name(), ((TextInputEditText) v).getText().toString());
                 } else if(v.getId() == R.id.team_name){
-                    editor.putString(TEAM_NAME, ((TextInputEditText) v).getText().toString());
+                    editor.putString(Preferences.TEAM_NAME.name(), ((TextInputEditText) v).getText().toString());
                 }
                 editor.commit();
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -121,16 +124,18 @@ public class CardListFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.d(TAG_LOG, "onViewCreated");
-        viewCreated();
-    }
-
     private void viewCreated() {
-        final Dealer dealer = DealerFactory.newInstance(getContext());
+        Log.d(TAG_LOG, "viewCreated");
+        final Dealer dealer = DealerFactory.newInstance(getActivity());
         CardsPagerAdapter cardsPagerAdapter = new CardsPagerAdapter(getActivity(), getFragmentManager(), dealer, mShakeDetector);
         this.viewPager.setAdapter(cardsPagerAdapter);
+    }
+
+    private void reload(int id) {
+        drawerNavigationView.setCheckedItem(id);
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+        drawerLayout.closeDrawer(drawerNavigationView);
+        ((MainActivity) getActivity()).showGridFragment();
     }
 
     @OnClick(R.id.floating)
@@ -141,6 +146,7 @@ public class CardListFragment extends Fragment {
 
     public void selectCard(int position) {
         viewPager.setCurrentItem(position, true);
+        Log.d("CardListFragment", position + " :selectCard: ");
     }
 
     private class DrawerItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
@@ -151,33 +157,26 @@ public class CardListFragment extends Fragment {
             SharedPreferences.Editor editor = mPreferences.edit();
             int id = item.getItemId();
             if (id == R.id.nav_standard_poker) {
-                item.setChecked(true);
+                //item.setChecked(true);
                 Log.d(TAG_LOG, "onNavigationItemSelected Standard");
-                editor.putString(DECK_PREFERENCE, "0");
+                editor.putString(Preferences.DECK_PREFERENCE.name(), "0");
                 editor.commit();
                 reload(id);
             } else if(id == R.id.nav_fibonacci_poker){
-                item.setChecked(true);
+                //item.setChecked(true);
                 Log.d(TAG_LOG, "onNavigationItemSelected Fibonacci");
-                editor.putString(DECK_PREFERENCE, "1");
+                editor.putString(Preferences.DECK_PREFERENCE.name(), "1");
                 editor.commit();
                 reload(id);
             } else if(id == R.id.nav_tshirt_poker){
-                item.setChecked(true);
+                //item.setChecked(true);
                 Log.d(TAG_LOG, "onNavigationItemSelected TShirt");
-                editor.putString(DECK_PREFERENCE, "2");
+                editor.putString(Preferences.DECK_PREFERENCE.name(), "2");
                 editor.commit();
                 reload(id);
             }
             return true;
         }
-    }
-
-    private void reload(int id) {
-        drawerLayout.closeDrawer(drawerNavigationView);
-        viewCreated();
-        ((MainActivity) getActivity()).showGridFragment();
-        drawerNavigationView.setCheckedItem(id);
     }
 
     public void setShakeDetector(ShakeDetector mShakeDetector) {
