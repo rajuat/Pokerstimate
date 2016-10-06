@@ -3,20 +3,17 @@ package com.itservz.android.pokerstimate;
 import android.animation.Animator;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
-
 
 import com.itservz.android.pokerstimate.core.Dealer;
 import com.itservz.android.pokerstimate.core.DealerFactory;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnItemClick;
 
 public class CardGridFragment extends Fragment {
 
@@ -32,7 +29,7 @@ public class CardGridFragment extends Fragment {
         }
     };
 
-    @InjectView(R.id.list) GridView list;
+    private GridView gridView;
 
     public static CardGridFragment newInstance() {
         return new CardGridFragment();
@@ -42,7 +39,21 @@ public class CardGridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_card_grid, container, false);
         view.addOnLayoutChangeListener(onLayoutChangeListener);
-        ButterKnife.inject(this, view);
+        gridView = (GridView) view.findViewById(R.id.list);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((MainActivity)getActivity()).selectCard(position);
+                ((MainActivity)getActivity()).showListFragment();
+            }
+        });
+        FloatingActionButton back = (FloatingActionButton) view.findViewById(R.id.floating_back);
+        back.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).showListFragment();
+            }
+        });
         return view;
     }
 
@@ -50,12 +61,6 @@ public class CardGridFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Dealer dealer = DealerFactory.newInstance(getActivity());
         CardsGridAdapter adapter = new CardsGridAdapter(getActivity(), dealer);
-        list.setAdapter(adapter);
-    }
-
-    @OnItemClick(R.id.list) @SuppressWarnings("unused")
-    public void onItemClick(int position) {
-        ((MainActivity)getActivity()).selectCard(position);
-        ((MainActivity)getActivity()).showListFragment();
+        gridView.setAdapter(adapter);
     }
 }

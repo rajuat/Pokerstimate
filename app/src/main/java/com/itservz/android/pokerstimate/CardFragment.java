@@ -2,7 +2,6 @@ package com.itservz.android.pokerstimate;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +11,14 @@ import com.itservz.android.pokerstimate.model.CardViewModel;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 import com.itservz.android.pokerstimate.widgets.CardView;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class CardFragment extends Fragment {
-    private static final String KEY_INITIAL_MODEL = "com.itservz.android.pokerstimate.KEY_INITIAL_MODEL";
 
     public interface OnCardStatusChangeListener {
         void onCardStatusChange(Fragment fragment, CardViewModel card, CardStatus newStatus);
     }
 
-    @InjectView(R.id.card)
-    CardView cardView;
+    private CardView cardView;
     private OnCardStatusChangeListener listener;
     private CardView.OnCardStatusChangeListener cardStatusChangeListener;
     private ShakeDetector mShakeDetector;
@@ -40,16 +35,15 @@ public class CardFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        cardViewModel = (CardViewModel) this.getArguments().getSerializable("CardViewModel");
         super.onCreate(savedInstanceState);
+        cardViewModel = (CardViewModel) this.getArguments().getSerializable("CardViewModel");
         setListeners();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_card, container, false);
-        ButterKnife.inject(this, view);
-        //Bundle bundle = this.getArguments();
+        cardView = (CardView) view.findViewById(R.id.card);
         cardView.setCard(cardViewModel);
         cardView.setOnCardViewStatusChangeListener(cardStatusChangeListener);
         return view;
@@ -84,12 +78,5 @@ public class CardFragment extends Fragment {
         }
     }
 
-    public CardViewModel getCardViewModel() {
-        return cardViewModel;
-    }
-
-    /*public void setCardViewModel(CardViewModel cardViewModel) {
-        this.cardViewModel = cardViewModel;
-    }*/
 
 }

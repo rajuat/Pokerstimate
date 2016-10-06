@@ -6,14 +6,17 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_standard_poker"
+                    android:checkable="true"
                     android:icon="@drawable/ic_button_main"
                     android:title="Standard" />
                 <item
                     android:id="@+id/nav_fibonacci_poker"
+                    android:checkable="true"
                     android:icon="@drawable/ic_button_main"
                     android:title="Fibonacci Numbers" />
                 <item
                     android:id="@+id/nav_tshirt_poker"
+                    android:checkable="true"
                     android:icon="@drawable/ic_button_main"
                     android:title="T-Shirt Sizes" />
 
@@ -23,23 +26,22 @@
 
     <item android:title="Settings">
         <menu>
-            <item
-                android:id="@+id/nav_shake"
-                android:icon="@drawable/ic_button_main"
-                android:title="Shake to reveal" />
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_shake"
+                    android:checkable="true"
+                    android:icon="@drawable/ic_button_main"
+                    android:title="Shake to reveal" />
+            </group>
         </menu>
     </item>
 
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_rate"
                 android:icon="@drawable/ic_button_main"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_info"
-                android:icon="@drawable/ic_button_main"
-                android:title="Rate" />
+                android:title="Rate Us" />
         </menu>
     </item>
 

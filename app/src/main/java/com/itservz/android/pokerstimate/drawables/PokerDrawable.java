@@ -16,6 +16,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
 import android.util.Log;
 
@@ -58,7 +59,7 @@ public class PokerDrawable extends Drawable implements Serializable{
         paint.setColor(Color.WHITE);
 
         textPaint = new TextPaint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(CardsFactory.getRandomPokerColors(context));
         textPaint.setTypeface(MyFont.getTypeface());
         textPaint.setFakeBoldText(true);
         textPaint.setAntiAlias(true);
@@ -73,12 +74,12 @@ public class PokerDrawable extends Drawable implements Serializable{
         smallTextPaint.setTextSize(32);
 
         logoTextPaint = new TextPaint();
-        logoTextPaint.setColor(Color.BLACK);
+        logoTextPaint.setColor(ContextCompat.getColor(context, R.color.brand_red_2));
         logoTextPaint.setTypeface(MyFont.getTypeface());
         logoTextPaint.setFakeBoldText(true);
         logoTextPaint.setAntiAlias(true);
         logoTextPaint.setTextAlign(Paint.Align.CENTER);
-        logoTextPaint.setTextSize(32);
+        logoTextPaint.setTextSize(11 * context.getResources().getDisplayMetrics().density);
     }
 
     @Override
@@ -86,12 +87,12 @@ public class PokerDrawable extends Drawable implements Serializable{
         int height = getBounds().height();
         int width = getBounds().width();
         Rect textBounds = new Rect();
-        int textSize = height*2/5;
+        float textSize = height * .32f;
         if(fullScreen){
             if(text.length() == 1){
-                textSize = height*4/5;
+                textSize = height * 0.64f;
             } else if (text.length() == 2){
-                textSize = height*3/5;
+                textSize = height * 0.56f;
             }
         }
         textPaint.setTextSize(textSize);
@@ -100,19 +101,31 @@ public class PokerDrawable extends Drawable implements Serializable{
         int textWidth = textBounds.width();
         RectF rect = new RectF(0.0f, 0.0f, width, height);
         canvas.drawRoundRect(rect, 30, 30, paint);
-        canvas.drawText(text, width/2, height/2 + textHeight/2, textPaint);
+
         if(fullScreen) {
-            canvas.drawText("100", width / 7, height / 9 , smallTextPaint);
-            canvas.drawText("100", width * 17/20, height * 29/30, smallTextPaint);
+            if("☕".equals(text)){
+                textPaint.setTextSize(textSize * .35f);
+                canvas.drawText(text, width/2, height * .6f, textPaint);
+            } else if("∞".equals(text)) {
+                canvas.drawText(text, width / 2, height * .68f, textPaint);
+            } else {
+                canvas.drawText(text, width / 2, height / 2 + textHeight / 2, textPaint);
+            }
+
+            /*canvas.drawText(text, width / 7, height / 9 , smallTextPaint);
+            canvas.drawText(text, width * 17/20, height * 29/30, smallTextPaint);*/
 
             String companyName = getCompanyName();
             Rect companyTextBounds = new Rect();
             logoTextPaint.getTextBounds(companyName, 0, text.length(), companyTextBounds);
-            canvas.drawText(companyName, width/2, companyTextBounds.height() /2, logoTextPaint );
+            canvas.drawText(companyName, width/2, height * .05f + companyTextBounds.height(), logoTextPaint );
+
             String teamName = getTeamName();
             Rect teamTextBounds = new Rect();
             logoTextPaint.getTextBounds(teamName, 0, text.length(), companyTextBounds);
-            canvas.drawText(teamName, width/2, height - companyTextBounds.height() /2, logoTextPaint );
+            canvas.drawText(teamName, width/2, height * .95f , logoTextPaint );
+        } else {
+            canvas.drawText(text, width / 2, height / 2 + textHeight / 2, textPaint);
         }
     }
 

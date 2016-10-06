@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.itservz.android.pokerstimate.core.Dealer;
-import com.itservz.android.pokerstimate.drawables.PokerDrawable;
 import com.itservz.android.pokerstimate.model.CardStatus;
 import com.itservz.android.pokerstimate.model.CardViewModel;
 
@@ -29,11 +28,8 @@ public class CardsGridAdapter extends BaseAdapter {
 
     private void initializeCardModelPool() {
         int count = dealer.getDeckLength();
-        for(int index = 0; index < count; index++) {
-            PokerDrawable upwardResourceId = getUpwardResourceId(index);
+        for (int index = 0; index < count; index++) {
             CardViewModel cardViewModel = new CardViewModel(context, false, dealer.getCardAtPosition(index));
-            /*cardViewModel.setDownwardResourceId(R.drawable.cover_big);
-            cardViewModel.setUpwardResourceId(upwardResourceId);*/
             cardViewModel.setStatus(CardStatus.UPWARDS);
             cardViewModelList.add(cardViewModel);
         }
@@ -50,25 +46,22 @@ public class CardsGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int position) { return 0; }
+    public long getItemId(int position) {
+        return 0;
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View result = convertView;
         if (convertView == null) {
             result = LayoutInflater
-                            .from(context)
-                                .inflate(R.layout.item_small_card, null);
+                    .from(context)
+                    .inflate(R.layout.item_small_card, null);
         }
         CardViewModel card = cardViewModelList.get(position);
-        ImageView cardView = (ImageView)result.findViewById(R.id.card);
+        ImageView cardView = (ImageView) result.findViewById(R.id.card);
         cardView.setImageDrawable(card.getUpwardResourceId());
         result.setTag(card);
         return result;
-    }
-
-    private PokerDrawable getUpwardResourceId(int position) {
-        String card = dealer.getCardAtPosition(position);
-        return new PokerDrawable(context, card, false);
     }
 }

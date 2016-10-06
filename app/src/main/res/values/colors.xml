@@ -5,4 +5,13 @@
     <color name="brand_red_2">#A33739</color>
     <color name="brand_grey">#566573</color>
     <color name="brand_blue">#2196f3</color>
+
+    <color name="deep_purple_poker">#311B92</color>
+    <color name="blue_grey_poker">#263238</color>
+    <color name="brown_poker">#3E2723</color>
+    <color name="grey_poker">#212121</color>
+    <color name="cyan_poker">#006064</color>
+    <color name="blue_poker">#0D47A1</color>
+    <color name="red_poker">#B71C1C</color>
+    <color name="purple_poker">#4A148C</color>
 </resources>

@@ -5,15 +5,12 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.MobileAds;
 import com.itservz.android.pokerstimate.fonts.MyFont;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 
@@ -27,13 +24,15 @@ public class MainActivity extends FragmentActivity {
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
     private boolean doubleBackToExitPressedOnce;
-    private EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG_LOG, "onCreate");
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+
         MyFont.initiazedFont(getApplicationContext());
         // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -47,6 +46,14 @@ public class MainActivity extends FragmentActivity {
         super.onResume();
         // Add the following line to register the Session Manager Listener onResume
         //mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    void registerShake(){
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+    }
+
+    void unregisterShake(){
+        mSensorManager.unregisterListener(mShakeDetector);
     }
 
     @Override
@@ -89,7 +96,6 @@ public class MainActivity extends FragmentActivity {
 
     public void showListFragment() {
         getSupportFragmentManager().popBackStack();
-        Log.d(TAG_LOG, "showListFragment " + getSupportFragmentManager().getBackStackEntryCount());
     }
 
     public void showGridFragment() {
@@ -98,7 +104,6 @@ public class MainActivity extends FragmentActivity {
                 .show(cardGridFragment)
                 .addToBackStack(null)
                 .commit();
-        Log.d(TAG_LOG, "showGridFragment " + getSupportFragmentManager().getBackStackEntryCount());
     }
 
     @Override

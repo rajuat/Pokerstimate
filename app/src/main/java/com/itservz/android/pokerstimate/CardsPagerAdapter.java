@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 import com.itservz.android.pokerstimate.core.Dealer;
@@ -15,7 +15,7 @@ import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CardsPagerAdapter extends FragmentPagerAdapter {
+public class CardsPagerAdapter extends FragmentStatePagerAdapter {
     private final Dealer dealer;
     private final List<CardFragment> fragmentList;
     private CardFragment.OnCardStatusChangeListener onCardFragmentStateChange;
@@ -30,6 +30,16 @@ public class CardsPagerAdapter extends FragmentPagerAdapter {
         this.fragmentList = new ArrayList<>(dealer.getDeckLength());
         initializeListener();
         initializeFragmentPool();
+    }
+
+    @Override
+    public int getCount() {
+        return dealer.getDeckLength();
+    }
+
+    @Override
+    public Fragment getItem(int position) {
+        return fragmentList.get(position);
     }
 
     private void initializeListener() {
@@ -66,22 +76,12 @@ public class CardsPagerAdapter extends FragmentPagerAdapter {
             Bundle bundle = new Bundle();
             bundle.putSerializable("CardViewModel", cardViewModel);
             fragment.setArguments(bundle);
-            //fragment.setCardViewModel(cardViewModel);
             fragment.setOnCardStatusChangeListener(onCardFragmentStateChange);
             fragment.setShakeDetector(mShakeDetector);
             fragmentList.add(fragment);
         }
     }
 
-    @Override
-    public Fragment getItem(int position) {
-        CardFragment fragment = fragmentList.get(position);
-        return fragment;
-    }
 
-    @Override
-    public int getCount() {
-        return dealer.getDeckLength();
-    }
 
 }

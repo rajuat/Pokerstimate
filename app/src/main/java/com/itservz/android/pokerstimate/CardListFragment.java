@@ -1,9 +1,14 @@
 package com.itservz.android.pokerstimate;
 
+import android.animation.Animator;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -15,26 +20,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.itservz.android.pokerstimate.core.Dealer;
 import com.itservz.android.pokerstimate.core.DealerFactory;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 public class CardListFragment extends Fragment {
     private static final String TAG_LOG = "CardListFragment";
     private ShakeDetector mShakeDetector;
     private DrawerLayout drawerLayout = null;
     private NavigationView drawerNavigationView = null;
-    ViewPager viewPager;
-
-    //@InjectView(R.id.pager)
+    private ViewPager viewPager;
 
     public static CardListFragment newInstance() {
         return new CardListFragment();
@@ -45,11 +47,17 @@ public class CardListFragment extends Fragment {
         Log.d(TAG_LOG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_card_list, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
-        ButterKnife.inject(this, view);
+
+        //Admob
+        AdView mAdView = (AdView) view.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.setAdSize(AdSize.BANNER);
+        mAdView.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        mAdView.loadAd(adRequest);
 
         //drawer starts
         final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        ImageView button = (ImageView) view.findViewById(R.id.drawer_settings);
+        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.drawer_settings);
         drawerLayout = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         drawerNavigationView = (NavigationView) getActivity().findViewById(R.id.left_drawer);
@@ -64,6 +72,9 @@ public class CardListFragment extends Fragment {
             drawerNavigationView.setCheckedItem(R.id.nav_tshirt_poker);
         }
 
+        if(mPreferences.getBoolean(Preferences.SHAKE.name(), false)){
+            drawerNavigationView.setCheckedItem(R.id.nav_shake);
+        }
 
         final TextInputLayout company_name_wrapper = (TextInputLayout) headerView.findViewById(R.id.company_name_wrapper);
         final TextInputLayout team_name_wrapper = (TextInputLayout) headerView.findViewById(R.id.team_name_wrapper);
@@ -85,6 +96,15 @@ public class CardListFragment extends Fragment {
             }
         });
         //drawer ends
+
+        FloatingActionButton buttonSwap = (FloatingActionButton) view.findViewById(R.id.floating);
+        buttonSwap.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).showGridFragment();
+            }
+        });
+
         return view;
     }
 
@@ -138,12 +158,6 @@ public class CardListFragment extends Fragment {
         ((MainActivity) getActivity()).showGridFragment();
     }
 
-    @OnClick(R.id.floating)
-    @SuppressWarnings("unused")
-    protected void onFloatingClick() {
-        ((MainActivity) getActivity()).showGridFragment();
-    }
-
     public void selectCard(int position) {
         viewPager.setCurrentItem(position, true);
         Log.d("CardListFragment", position + " :selectCard: ");
@@ -154,26 +168,47 @@ public class CardListFragment extends Fragment {
         public boolean onNavigationItemSelected(MenuItem item) {
             Log.d(TAG_LOG, "onNavigationItemSelected");
             SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-            SharedPreferences.Editor editor = mPreferences.edit();
+
             int id = item.getItemId();
             if (id == R.id.nav_standard_poker) {
                 //item.setChecked(true);
                 Log.d(TAG_LOG, "onNavigationItemSelected Standard");
+                SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString(Preferences.DECK_PREFERENCE.name(), "0");
                 editor.commit();
                 reload(id);
             } else if(id == R.id.nav_fibonacci_poker){
                 //item.setChecked(true);
                 Log.d(TAG_LOG, "onNavigationItemSelected Fibonacci");
+                SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString(Preferences.DECK_PREFERENCE.name(), "1");
                 editor.commit();
                 reload(id);
             } else if(id == R.id.nav_tshirt_poker){
                 //item.setChecked(true);
                 Log.d(TAG_LOG, "onNavigationItemSelected TShirt");
+                SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString(Preferences.DECK_PREFERENCE.name(), "2");
                 editor.commit();
                 reload(id);
+            } else if(id == R.id.nav_shake){
+                Log.d(TAG_LOG, "onNavigationItemSelected Shake");
+                //was true before
+                if(mPreferences.getBoolean(Preferences.SHAKE.name(), false)){
+                    ((MainActivity) getActivity()).unregisterShake();
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean(Preferences.SHAKE.name(), false);
+                    editor.commit();
+                    item.setChecked(false);
+                } else {
+                    ((MainActivity) getActivity()).registerShake();
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    editor.putBoolean(Preferences.SHAKE.name(), true);
+                    editor.commit();
+                    item.setChecked(true);
+                }
+            } else if(id == R.id.nav_rate){
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.itservz.android.mayekplay")));
             }
             return true;
         }
