@@ -50,12 +50,12 @@ public class CardsPagerAdapter extends FragmentStatePagerAdapter {
             }
         };
 
-        /*mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
             @Override
-            public void onShake(int count) {
-                flip(newStatus);
+            public void onShake(int count, CardStatus  cardStatus) {
+                flip(cardStatus);
             }
-        });*/
+        });
     }
 
     private void flip(CardStatus newStatus){

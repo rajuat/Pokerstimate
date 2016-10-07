@@ -1,3 +1,4 @@
+/*
 package com.itservz.android.pokerstimate.drawables;
 
 import android.content.Context;
@@ -85,3 +86,4 @@ public class CardsFactory {
         pokerColors.add(ContextCompat.getColor(context, R.color.purple_poker));
     }
 }
+*/

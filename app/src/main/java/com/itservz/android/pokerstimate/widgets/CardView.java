@@ -132,7 +132,7 @@ public class CardView extends FrameLayout {
         /*mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake(int count) {
-                if (cardStatus == CardViewModel.CardStatus.UPWARDS) {
+                if (cardStatus == CardStatus.UPWARDS) {
                     hideCard();
                 } else {
                     revealCard();

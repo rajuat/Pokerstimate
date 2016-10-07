@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.itservz.android.pokerstimate.fonts.MyFont;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
@@ -32,6 +35,12 @@ public class MainActivity extends FragmentActivity {
         Log.d(TAG_LOG, "onCreate");
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        //Admob
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.setAdSize(AdSize.BANNER);
+        mAdView.setAdUnitId(getString(R.string.banner_ad_unit_id));
+        mAdView.loadAd(adRequest);
 
         MyFont.initiazedFont(getApplicationContext());
         // ShakeDetector initialization
@@ -44,8 +53,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onResume() {
         super.onResume();
-        // Add the following line to register the Session Manager Listener onResume
-        //mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        registerShake();
     }
 
     void registerShake(){
@@ -58,8 +66,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onPause() {
-        // Add the following line to unregister the Sensor Manager onPause
-        //mSensorManager.unregisterListener(mShakeDetector);
+       unregisterShake();
         super.onPause();
     }
 

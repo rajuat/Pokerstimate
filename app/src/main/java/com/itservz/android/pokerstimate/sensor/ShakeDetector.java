@@ -6,7 +6,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-import com.itservz.android.pokerstimate.model.CardViewModel;
+import com.itservz.android.pokerstimate.model.CardStatus;
 
 public class ShakeDetector implements SensorEventListener {
 
@@ -34,7 +34,7 @@ public class ShakeDetector implements SensorEventListener {
     }
 
     public interface OnShakeListener {
-        public void onShake(int count);
+        public void onShake(int count, CardStatus cardStatus);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ShakeDetector implements SensorEventListener {
                 mShakeTimestamp = now;
                 mShakeCount++;
 
-                mListener.onShake(mShakeCount);
+                mListener.onShake(mShakeCount, null);
             }
         }
     }

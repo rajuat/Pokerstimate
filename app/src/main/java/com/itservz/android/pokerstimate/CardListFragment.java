@@ -1,11 +1,9 @@
 package com.itservz.android.pokerstimate;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -20,13 +18,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.itservz.android.pokerstimate.core.Dealer;
 import com.itservz.android.pokerstimate.core.DealerFactory;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
@@ -47,13 +42,6 @@ public class CardListFragment extends Fragment {
         Log.d(TAG_LOG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_card_list, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
-
-        //Admob
-        AdView mAdView = (AdView) view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.setAdSize(AdSize.BANNER);
-        mAdView.setAdUnitId(getString(R.string.banner_ad_unit_id));
-        mAdView.loadAd(adRequest);
 
         //drawer starts
         final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -82,10 +70,10 @@ public class CardListFragment extends Fragment {
         team_name_wrapper.setHint("Team Name");
 
         TextInputEditText companyName = (TextInputEditText) headerView.findViewById(R.id.company_name);
-        final TextInputEditText teamName = (TextInputEditText) headerView.findViewById(R.id.team_name);
         companyName.setText(mPreferences.getString(Preferences.COMPANY_NAME.name(), ""));
+        companyName.setOnFocusChangeListener(new FocusChangeListener());
+        final TextInputEditText teamName = (TextInputEditText) headerView.findViewById(R.id.team_name);
         teamName.setText(mPreferences.getString(Preferences.TEAM_NAME.name(), ""));
-
         teamName.setOnFocusChangeListener(new FocusChangeListener());
 
         drawerNavigationView.setNavigationItemSelectedListener(new DrawerItemSelectedListener());
@@ -104,6 +92,12 @@ public class CardListFragment extends Fragment {
                 ((MainActivity) getActivity()).showGridFragment();
             }
         });
+
+        //back and forth
+
+        ImageView next = (ImageView) view.findViewById(R.id.next);
+        ImageView previous = (ImageView) view.findViewById(R.id.previous);
+
 
         return view;
     }

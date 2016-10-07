@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="standard_cards">
-        <item>"☕"</item>
-        <item>"∞"</item>
         <item>0</item>
         <item>½</item>
         <item>1</item>
@@ -19,8 +17,6 @@
         <item>"☕"</item>
     </string-array>
     <string-array name="fibonacci_cards">
-        <item>"☕"</item>
-        <item>"∞"</item>
         <item>0</item>
         <item>1</item>
         <item>2</item>
@@ -37,8 +33,6 @@
         <item>"☕"</item>
     </string-array>
     <string-array name="tshirt_size_cards">
-        <item>"☕"</item>
-        <item>"∞"</item>
         <item>XS</item>
         <item>S</item>
         <item>M</item>
@@ -48,15 +42,4 @@
         <item>"∞"</item>
         <item>"☕"</item>
     </string-array>
-    <string-array name="deck_options">
-        <item>Standard</item>
-        <item>Fibonacci Numbers</item>
-        <item>T-Shirt Sizes</item>
-    </string-array>
-    <string-array name="deck_options_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
 </resources>

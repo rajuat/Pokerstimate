@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -22,6 +23,8 @@ import android.util.Log;
 
 import com.itservz.android.pokerstimate.Preferences;
 import com.itservz.android.pokerstimate.R;
+import com.itservz.android.pokerstimate.core.CardColor;
+import com.itservz.android.pokerstimate.core.ColorsFactory;
 import com.itservz.android.pokerstimate.fonts.MyFont;
 
 import java.io.Serializable;
@@ -31,6 +34,7 @@ public class PokerDrawable extends Drawable implements Serializable{
     private final TextPaint textPaint;
     private final TextPaint smallTextPaint;
     private final TextPaint logoTextPaint;
+    private final CardColor cardColor;
     private Paint paint;
 
     private String text;
@@ -43,23 +47,24 @@ public class PokerDrawable extends Drawable implements Serializable{
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Bitmap bitmap = null;
         if(fullScreen){
-            bitmap = BitmapFactory.decodeResource(context.getResources(), CardsFactory.getRandomBigCard());
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.card_big);
         } else {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), CardsFactory.getRandomSmallCard());
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.card_small);
         }
+
         height = bitmap.getHeight();
         width = bitmap.getWidth();
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
         this.text = text == null ? "" : text;
 
+        cardColor = ColorsFactory.getInstance(context).getRandomPokerColors();
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setShader(shader);
-        paint.setColor(Color.WHITE);
 
         textPaint = new TextPaint();
-        textPaint.setColor(CardsFactory.getRandomPokerColors(context));
+        textPaint.setColor(cardColor.getDark());
         textPaint.setTypeface(MyFont.getTypeface());
         textPaint.setFakeBoldText(true);
         textPaint.setAntiAlias(true);
@@ -84,8 +89,8 @@ public class PokerDrawable extends Drawable implements Serializable{
 
     @Override
     public void draw(Canvas canvas) {
-        int height = getBounds().height();
-        int width = getBounds().width();
+       /* int height = getBounds().height();
+        int width = getBounds().width();*/
         Rect textBounds = new Rect();
         float textSize = height * .32f;
         if(fullScreen){
@@ -99,7 +104,12 @@ public class PokerDrawable extends Drawable implements Serializable{
         textPaint.getTextBounds(text, 0, text.length(), textBounds);
         int textHeight = textBounds.height();
         int textWidth = textBounds.width();
+
         RectF rect = new RectF(0.0f, 0.0f, width, height);
+        Path clipPath = new Path();
+        clipPath.addRoundRect(rect, 40, 40, Path.Direction.CW);
+        canvas.clipPath(clipPath);
+        canvas.drawColor(cardColor.getLight());
         canvas.drawRoundRect(rect, 30, 30, paint);
 
         if(fullScreen) {

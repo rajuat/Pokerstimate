@@ -7,17 +7,17 @@
                 <item
                     android:id="@+id/nav_standard_poker"
                     android:checkable="true"
-                    android:icon="@drawable/ic_button_main"
+                    android:icon="@android:drawable/btn_radio"
                     android:title="Standard" />
                 <item
                     android:id="@+id/nav_fibonacci_poker"
                     android:checkable="true"
-                    android:icon="@drawable/ic_button_main"
+                    android:icon="@android:drawable/btn_radio"
                     android:title="Fibonacci Numbers" />
                 <item
                     android:id="@+id/nav_tshirt_poker"
                     android:checkable="true"
-                    android:icon="@drawable/ic_button_main"
+                    android:icon="@android:drawable/btn_radio"
                     android:title="T-Shirt Sizes" />
 
             </group>
@@ -30,7 +30,7 @@
                 <item
                     android:id="@+id/nav_shake"
                     android:checkable="true"
-                    android:icon="@drawable/ic_button_main"
+                    android:icon="@drawable/shake"
                     android:title="Shake to reveal" />
             </group>
         </menu>
@@ -40,7 +40,7 @@
         <menu>
             <item
                 android:id="@+id/nav_rate"
-                android:icon="@drawable/ic_button_main"
+                android:icon="@android:drawable/star_on"
                 android:title="Rate Us" />
         </menu>
     </item>
