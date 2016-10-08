@@ -7,7 +7,7 @@ android {
         applicationId "com.itservz.android.pokerstimate"
         minSdkVersion 15
         targetSdkVersion 23
-        multiDexEnabled true
+        multiDexEnabled false
         versionCode 4
         versionName "1.1"
         vectorDrawables.useSupportLibrary = true

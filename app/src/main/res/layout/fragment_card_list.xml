@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ads="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -12,10 +11,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/margin_small"
-        android:layout_marginBottom="16dp"
         android:src="@drawable/ic_drawer"
-        app:backgroundTint="@color/brand_red" />
+        app:backgroundTint="@color/brand_red"
+        android:layout_marginTop="57dp"
+        android:layout_marginLeft="@dimen/margin_small" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,24 +23,35 @@
         android:gravity="top"
         android:orientation="vertical">
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="@string/banner_ad_unit_id_pokerstimate"
+            android:layout_gravity="right">
+
+        </com.google.android.gms.ads.AdView>
+
+
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight=".92"
+            android:layout_weight=".95"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight=".08"
             android:gravity="center"
+            android:layout_weight=".05"
             android:orientation="horizontal"
-            android:padding="@dimen/margin_normal">
+            >
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/next"
                 android:src="@drawable/arrow_left" />
 
@@ -51,7 +61,7 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:id="@+id/previous"
                 android:src="@drawable/arrow_right" />
 

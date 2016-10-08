@@ -20,13 +20,11 @@ public class CardsPagerAdapter extends FragmentStatePagerAdapter {
     private final List<CardFragment> fragmentList;
     private CardFragment.OnCardStatusChangeListener onCardFragmentStateChange;
     private Context context;
-    private ShakeDetector mShakeDetector;
 
-    public CardsPagerAdapter(Context context, FragmentManager fragmentManager, Dealer dealer, ShakeDetector mShakeDetector) {
+    public CardsPagerAdapter(Context context, FragmentManager fragmentManager, Dealer dealer) {
         super(fragmentManager);
         this.dealer = dealer;
         this.context = context;
-        this.mShakeDetector = mShakeDetector;
         this.fragmentList = new ArrayList<>(dealer.getDeckLength());
         initializeListener();
         initializeFragmentPool();
@@ -50,7 +48,7 @@ public class CardsPagerAdapter extends FragmentStatePagerAdapter {
             }
         };
 
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+        ShakeDetector.getInstance().setOnShakeListener(new ShakeDetector.OnShakeListener() {
             @Override
             public void onShake(int count, CardStatus  cardStatus) {
                 flip(cardStatus);
@@ -73,11 +71,11 @@ public class CardsPagerAdapter extends FragmentStatePagerAdapter {
             Log.d("CardsPagerAdapter", dealer.getCardAtPosition(index));
             cardViewModel.setStatus(dealer.getCardStatus());
             CardFragment fragment = new CardFragment();
-            Bundle bundle = new Bundle();
+            /*Bundle bundle = new Bundle();
             bundle.putSerializable("CardViewModel", cardViewModel);
-            fragment.setArguments(bundle);
+            fragment.setArguments(bundle);*/
+            fragment.setCardViewModel(cardViewModel);
             fragment.setOnCardStatusChangeListener(onCardFragmentStateChange);
-            fragment.setShakeDetector(mShakeDetector);
             fragmentList.add(fragment);
         }
     }

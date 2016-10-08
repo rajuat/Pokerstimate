@@ -4,13 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.itservz.android.pokerstimate.Preferences;
 import com.itservz.android.pokerstimate.R;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class DealerFactory {
 
@@ -18,46 +16,61 @@ public class DealerFactory {
     private SharedPreferences mPreferences;
     private Dealer mDealer;
     private String deckType;
+    private static DealerFactory INSTANCE = null;
+    private String[] standardCards = null;
+    private String[] fibonacciCards = null;
+    private String[] tShirtCards = null;
+
+    private Dealer mStandardDealer;
+    private Dealer mFibonacciDealer;
+    private Dealer mTShirtDealer;
 
     public static Dealer newInstance(Context context) {
-        return new DealerFactory(context).mDealer;
+        if(INSTANCE == null){
+            INSTANCE = new DealerFactory(context);
+        }
+        return INSTANCE.getDealer();
     }
 
-    public DealerFactory(Context context) {
+    private DealerFactory(Context context) {
         mResources = context.getResources();
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        mDealer = new Dealer(getCards());
-        mDealer.setType(deckType);
     }
 
 
-    private List<String> getCards() {
+    private Dealer getDealer() {
         int deckPref = Integer.parseInt(mPreferences.getString(Preferences.DECK_PREFERENCE.name(), "0"));
         DeckType selectedType = DeckType.values()[deckPref];
         return buildDeck(selectedType);
     }
 
-    private List<String> buildDeck(DeckType type) {
-        String[] cards = null;
-
+    private Dealer buildDeck(DeckType type) {
         switch (type) {
             case STANDARD:
-                cards = mResources.getStringArray(R.array.standard_cards);
-                deckType = DeckType.STANDARD.name();
-                break;
+                if(mStandardDealer == null) {
+                    standardCards = mResources.getStringArray(R.array.standard_cards);
+                    mStandardDealer = new Dealer(Arrays.asList(standardCards));
+                    mStandardDealer.setType(DeckType.STANDARD.name());
+                }
+                return mStandardDealer;
             case FIBONACCI:
-                cards = mResources.getStringArray(R.array.fibonacci_cards);
-                deckType = DeckType.FIBONACCI.name();
-                break;
+                if(mFibonacciDealer == null) {
+                    fibonacciCards = mResources.getStringArray(R.array.fibonacci_cards);
+                    deckType = DeckType.FIBONACCI.name();
+                    mFibonacciDealer = new Dealer(Arrays.asList(fibonacciCards));
+                    mFibonacciDealer.setType(DeckType.FIBONACCI.name());
+                }
+                return mFibonacciDealer;
             case TSHIRT_SIZE:
-                cards = mResources.getStringArray(R.array.tshirt_size_cards);
-                deckType = DeckType.TSHIRT_SIZE.name();
-                break;
+                if(mTShirtDealer == null) {
+                    tShirtCards = mResources.getStringArray(R.array.tshirt_size_cards);
+                    deckType = DeckType.TSHIRT_SIZE.name();
+                    mTShirtDealer = new Dealer(Arrays.asList(tShirtCards));
+                    mTShirtDealer.setType(DeckType.TSHIRT_SIZE.name());
+                }
+                return mTShirtDealer;
             default:
-                break;
+                return null;
         }
-        List<String> strings = Arrays.asList(cards);
-        Log.d("DealerFactory", "" + strings.toString());
-        return strings;
     }
 }

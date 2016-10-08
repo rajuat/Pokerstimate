@@ -35,6 +35,7 @@ public class PokerDrawable extends Drawable implements Serializable{
     private final TextPaint smallTextPaint;
     private final TextPaint logoTextPaint;
     private final CardColor cardColor;
+    private final float density;
     private Paint paint;
 
     private String text;
@@ -65,14 +66,14 @@ public class PokerDrawable extends Drawable implements Serializable{
 
         textPaint = new TextPaint();
         textPaint.setColor(cardColor.getDark());
-        textPaint.setTypeface(MyFont.getTypeface());
+        textPaint.setTypeface(MyFont.getDinTypeface());
         textPaint.setFakeBoldText(true);
         textPaint.setAntiAlias(true);
         textPaint.setTextAlign(Paint.Align.CENTER);
 
         smallTextPaint = new TextPaint();
         smallTextPaint.setColor(Color.BLACK);
-        smallTextPaint.setTypeface(MyFont.getTypeface());
+        smallTextPaint.setTypeface(MyFont.getTrenchTypeface());
         smallTextPaint.setFakeBoldText(true);
         smallTextPaint.setAntiAlias(true);
         smallTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -80,20 +81,21 @@ public class PokerDrawable extends Drawable implements Serializable{
 
         logoTextPaint = new TextPaint();
         logoTextPaint.setColor(ContextCompat.getColor(context, R.color.brand_red_2));
-        logoTextPaint.setTypeface(MyFont.getTypeface());
+        logoTextPaint.setTypeface(MyFont.getTrenchTypeface());
         logoTextPaint.setFakeBoldText(true);
         logoTextPaint.setAntiAlias(true);
         logoTextPaint.setTextAlign(Paint.Align.CENTER);
-        logoTextPaint.setTextSize(11 * context.getResources().getDisplayMetrics().density);
+        density = context.getResources().getDisplayMetrics().density;
+        logoTextPaint.setTextSize(14 * density);
+        Log.d("PokerDrawable", "density "+density);
     }
 
     @Override
     public void draw(Canvas canvas) {
-       /* int height = getBounds().height();
-        int width = getBounds().width();*/
-        Rect textBounds = new Rect();
         float textSize = height * .32f;
+        float radius = 4*density;
         if(fullScreen){
+            radius = 12*density;
             if(text.length() == 1){
                 textSize = height * 0.64f;
             } else if (text.length() == 2){
@@ -101,16 +103,19 @@ public class PokerDrawable extends Drawable implements Serializable{
             }
         }
         textPaint.setTextSize(textSize);
+
+        Rect textBounds = new Rect();
         textPaint.getTextBounds(text, 0, text.length(), textBounds);
         int textHeight = textBounds.height();
         int textWidth = textBounds.width();
 
-        RectF rect = new RectF(0.0f, 0.0f, width, height);
+        float margin = 0.0f;
+        RectF rect = new RectF(margin, margin, width - margin, height - margin);
         Path clipPath = new Path();
-        clipPath.addRoundRect(rect, 40, 40, Path.Direction.CW);
+        clipPath.addRoundRect(rect, radius, radius, Path.Direction.CW);
         canvas.clipPath(clipPath);
         canvas.drawColor(cardColor.getLight());
-        canvas.drawRoundRect(rect, 30, 30, paint);
+        canvas.drawRoundRect(rect, radius, radius, paint);
 
         if(fullScreen) {
             if("☕".equals(text)){
@@ -127,12 +132,12 @@ public class PokerDrawable extends Drawable implements Serializable{
 
             String companyName = getCompanyName();
             Rect companyTextBounds = new Rect();
-            logoTextPaint.getTextBounds(companyName, 0, text.length(), companyTextBounds);
+            logoTextPaint.getTextBounds(companyName, 0, companyName.length(), companyTextBounds);
             canvas.drawText(companyName, width/2, height * .05f + companyTextBounds.height(), logoTextPaint );
 
             String teamName = getTeamName();
             Rect teamTextBounds = new Rect();
-            logoTextPaint.getTextBounds(teamName, 0, text.length(), companyTextBounds);
+            logoTextPaint.getTextBounds(teamName, 0, teamName.length(), teamTextBounds);
             canvas.drawText(teamName, width/2, height * .95f , logoTextPaint );
         } else {
             canvas.drawText(text, width / 2, height / 2 + textHeight / 2, textPaint);
@@ -155,11 +160,19 @@ public class PokerDrawable extends Drawable implements Serializable{
     }
 
     public String getCompanyName() {
-        return sharedPreferences.getString(Preferences.COMPANY_NAME.name(), "ITSERVZ");
+        String companyName = sharedPreferences.getString(Preferences.COMPANY_NAME.name(), "ITSERVZ");
+        if(companyName == null || companyName.trim().length() == 0){
+            companyName = "ITSERVZ";
+        }
+        return companyName;
     }
 
     public String getTeamName() {
-        return sharedPreferences.getString(Preferences.TEAM_NAME.name(), "TEAM SCRUM");
+        String teamName = sharedPreferences.getString(Preferences.TEAM_NAME.name(), "TEAM SCRUM");
+        if(teamName == null || teamName.trim().length() == 0){
+            teamName = "TEAM SCRUM";
+        }
+        return teamName;
     }
 
     public String getText() {

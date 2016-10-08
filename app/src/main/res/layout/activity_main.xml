@@ -8,27 +8,12 @@
     android:background="@color/background"
     android:gravity="center">
 
-    <LinearLayout
+    <!-- The main content view -->
+    <FrameLayout
+        android:id="@+id/content_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:layout_height="match_parent" />
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"
-            android:layout_gravity="center_horizontal"></com.google.android.gms.ads.AdView>
-
-        <!-- The main content view -->
-        <FrameLayout
-            android:id="@+id/content_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
     <!-- The navigation drawer -->
     <android.support.design.widget.NavigationView
         android:id="@+id/left_drawer"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:title="Choose Poker">
         <menu>
-            <group android:checkableBehavior="single">
+            <group android:checkableBehavior="all">
                 <item
                     android:id="@+id/nav_standard_poker"
                     android:checkable="true"
@@ -24,15 +24,12 @@
         </menu>
     </item>
 
-    <item android:title="Settings">
+    <item android:title="Shake it to see it">
         <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_shake"
-                    android:checkable="true"
-                    android:icon="@drawable/shake"
-                    android:title="Shake to reveal" />
-            </group>
+            <item
+                android:id="@+id/nav_shake"
+                android:icon="@drawable/shake"
+                android:title="@string/shake_turn_on" />
         </menu>
     </item>
 
@@ -44,5 +41,4 @@
                 android:title="Rate Us" />
         </menu>
     </item>
-
 </menu>

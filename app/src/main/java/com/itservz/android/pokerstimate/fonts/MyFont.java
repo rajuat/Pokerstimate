@@ -6,19 +6,27 @@ import android.util.Log;
 
 
 public class MyFont {
-    private static Typeface typeface;
+    private static Typeface dinTypeface;
+    private static Typeface trenchTypeface;
 
     public static void initiazedFont(Context context) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/dinRegular.ttf");
+        dinTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/dinRegular.ttf");
+        trenchTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/trench100free.ttf");
     }
 
     public static void initiazedFontOld(Context context) {
-        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/DejaVuSansCondensedBold.ttf");
     }
 
-    public static Typeface getTypeface() {
-        if (typeface != null) {
-            return typeface;
+    public static Typeface getDinTypeface() {
+        if (dinTypeface != null) {
+            return dinTypeface;
+        } else {
+            return Typeface.create("Arail", Typeface.BOLD);
+        }
+    }
+    public static Typeface getTrenchTypeface() {
+        if (trenchTypeface != null) {
+            return trenchTypeface;
         } else {
             return Typeface.create("Arail", Typeface.BOLD);
         }

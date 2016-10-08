@@ -21,22 +21,17 @@ public class CardFragment extends Fragment {
     private CardView cardView;
     private OnCardStatusChangeListener listener;
     private CardView.OnCardStatusChangeListener cardStatusChangeListener;
-    private ShakeDetector mShakeDetector;
+
+    public void setCardViewModel(CardViewModel cardViewModel) {
+        this.cardViewModel = cardViewModel;
+    }
+
     private CardViewModel cardViewModel;
-
-    public ShakeDetector getShakeDetector() {
-        return mShakeDetector;
-    }
-
-    public void setShakeDetector(ShakeDetector mShakeDetector) {
-        this.mShakeDetector = mShakeDetector;
-    }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cardViewModel = (CardViewModel) this.getArguments().getSerializable("CardViewModel");
+        //cardViewModel = (CardViewModel) this.getArguments().getSerializable("CardViewModel");
         setListeners();
     }
 

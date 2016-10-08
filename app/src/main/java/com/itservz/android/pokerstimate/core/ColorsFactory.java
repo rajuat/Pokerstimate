@@ -47,10 +47,10 @@ public class ColorsFactory {
         pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_cyan), ContextCompat.getColor(context, R.color.light_cyan)));
         pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_teal), ContextCompat.getColor(context, R.color.light_teal)));
         pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_green), ContextCompat.getColor(context, R.color.light_green)));
-        pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_light_green), ContextCompat.getColor(context, R.color.light_light_green)));
+        //pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_light_green), ContextCompat.getColor(context, R.color.light_light_green)));
         pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_lime), ContextCompat.getColor(context, R.color.light_lime)));
-        pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_yellow), ContextCompat.getColor(context, R.color.light_yellow)));
-        pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_amber), ContextCompat.getColor(context, R.color.light_amber)));
+        //pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_yellow), ContextCompat.getColor(context, R.color.light_yellow)));
+        //pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_amber), ContextCompat.getColor(context, R.color.light_amber)));
         pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_deep_orange), ContextCompat.getColor(context, R.color.light_deep_orange)));
         pokerColors.add(new CardColor(ContextCompat.getColor(context, R.color.dark_orange), ContextCompat.getColor(context, R.color.light_orange)));
     }
