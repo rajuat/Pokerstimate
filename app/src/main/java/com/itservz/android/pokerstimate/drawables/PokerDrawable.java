@@ -15,11 +15,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
-import android.util.Log;
 
 import com.itservz.android.pokerstimate.Preferences;
 import com.itservz.android.pokerstimate.R;
@@ -87,7 +85,6 @@ public class PokerDrawable extends Drawable implements Serializable{
         logoTextPaint.setTextAlign(Paint.Align.CENTER);
         density = context.getResources().getDisplayMetrics().density;
         logoTextPaint.setTextSize(14 * density);
-        Log.d("PokerDrawable", "density "+density);
     }
 
     @Override
@@ -126,9 +123,6 @@ public class PokerDrawable extends Drawable implements Serializable{
             } else {
                 canvas.drawText(text, width / 2, height / 2 + textHeight / 2, textPaint);
             }
-
-            /*canvas.drawText(text, width / 7, height / 9 , smallTextPaint);
-            canvas.drawText(text, width * 17/20, height * 29/30, smallTextPaint);*/
 
             String companyName = getCompanyName();
             Rect companyTextBounds = new Rect();

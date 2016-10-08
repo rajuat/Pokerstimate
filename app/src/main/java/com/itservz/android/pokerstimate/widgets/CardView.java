@@ -1,17 +1,3 @@
-/*
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
 package com.itservz.android.pokerstimate.widgets;
 
 import android.animation.Animator;
@@ -20,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -93,12 +78,9 @@ public class CardView extends FrameLayout {
 
     public void setCard(CardViewModel card) {
         if(card != null) {
-            Log.d("CardView", card.getUpwardResourceId().getText());
             this.card = card;
             this.cardStatus = card.getStatus();
             renderCard();
-        } else {
-            Log.d("CardView", "null");
         }
     }
 
@@ -283,14 +265,6 @@ public class CardView extends FrameLayout {
 
     private Drawable getDrawable(int resourceId) {
         return getResources().getDrawable(resourceId);
-    }
-
-    public ShakeDetector getShakeDetector() {
-        return mShakeDetector;
-    }
-
-    public void setShakeDetector(ShakeDetector mShakeDetector) {
-        this.mShakeDetector = mShakeDetector;
     }
 
     //endregion

@@ -24,14 +24,6 @@ public class CardViewModel implements Serializable {
 
     public CardStatus getStatus() { return status; }
 
-    public void setUpwardResourceId(PokerDrawable upwardResourceId) {
-        this.upwardResourceId = upwardResourceId;
-    }
-
-    public void setDownwardResourceId(int downwardResourceId) {
-        this.downwardResourceId = downwardResourceId;
-    }
-
     public void setStatus(CardStatus status) {
         this.status = status;
     }

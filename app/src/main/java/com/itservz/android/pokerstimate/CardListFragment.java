@@ -14,13 +14,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -41,7 +39,6 @@ public class CardListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG_LOG, "onCreateView");
         View view = inflater.inflate(R.layout.fragment_card_list, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
 
@@ -108,7 +105,6 @@ public class CardListFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.d(TAG_LOG, "onViewCreated");
         viewCreated();
     }
 
@@ -141,7 +137,6 @@ public class CardListFragment extends Fragment {
     }
 
     private void viewCreated() {
-        Log.d(TAG_LOG, "viewCreated");
         final Dealer dealer = DealerFactory.newInstance(getActivity());
         CardsPagerAdapter cardsPagerAdapter = new CardsPagerAdapter(getActivity(), getFragmentManager(), dealer);
         this.viewPager.setAdapter(cardsPagerAdapter);
@@ -156,7 +151,6 @@ public class CardListFragment extends Fragment {
     private class DrawerItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
-            Log.d(TAG_LOG, "onNavigationItemSelected");
             SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
             int id = item.getItemId();
@@ -164,7 +158,6 @@ public class CardListFragment extends Fragment {
                 item.setChecked(true);
                 drawerNavigationView.getMenu().findItem(R.id.nav_fibonacci_poker).setChecked(false);
                 drawerNavigationView.getMenu().findItem(R.id.nav_tshirt_poker).setChecked(false);
-                Log.d(TAG_LOG, "onNavigationItemSelected Standard");
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString(Preferences.DECK_PREFERENCE.name(), "0");
                 editor.commit();
@@ -173,7 +166,6 @@ public class CardListFragment extends Fragment {
                 item.setChecked(true);
                 drawerNavigationView.getMenu().findItem(R.id.nav_standard_poker).setChecked(false);
                 drawerNavigationView.getMenu().findItem(R.id.nav_tshirt_poker).setChecked(false);
-                Log.d(TAG_LOG, "onNavigationItemSelected Fibonacci");
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString(Preferences.DECK_PREFERENCE.name(), "1");
                 editor.commit();
@@ -182,13 +174,11 @@ public class CardListFragment extends Fragment {
                 item.setChecked(true);
                 drawerNavigationView.getMenu().findItem(R.id.nav_standard_poker).setChecked(false);
                 drawerNavigationView.getMenu().findItem(R.id.nav_fibonacci_poker).setChecked(false);
-                Log.d(TAG_LOG, "onNavigationItemSelected TShirt");
                 SharedPreferences.Editor editor = mPreferences.edit();
                 editor.putString(Preferences.DECK_PREFERENCE.name(), "2");
                 editor.commit();
                 reload(id);
             } else if (id == R.id.nav_shake) {
-                Log.d(TAG_LOG, "onNavigationItemSelected Shake");
                 //was true before
                 if (mPreferences.getBoolean(Preferences.SHAKE.name(), false)) {
                     ((MainActivity) getActivity()).unregisterShake();
@@ -212,7 +202,6 @@ public class CardListFragment extends Fragment {
 
     public void selectCard(int position) {
         viewPager.setCurrentItem(position, true);
-        Log.d("CardListFragment", position + " :selectCard: ");
     }
 
 }

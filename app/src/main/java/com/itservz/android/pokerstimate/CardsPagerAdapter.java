@@ -1,11 +1,9 @@
 package com.itservz.android.pokerstimate;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import com.itservz.android.pokerstimate.core.Dealer;
 import com.itservz.android.pokerstimate.model.CardStatus;
@@ -65,15 +63,10 @@ public class CardsPagerAdapter extends FragmentStatePagerAdapter {
 
     private void initializeFragmentPool() {
         int count = dealer.getDeckLength();
-        Log.d("CardsPagerAdapter", dealer.getType());
         for(int index = 0; index < count; index++) {
             CardViewModel cardViewModel = new CardViewModel(context, true, dealer.getCardAtPosition(index));
-            Log.d("CardsPagerAdapter", dealer.getCardAtPosition(index));
             cardViewModel.setStatus(dealer.getCardStatus());
             CardFragment fragment = new CardFragment();
-            /*Bundle bundle = new Bundle();
-            bundle.putSerializable("CardViewModel", cardViewModel);
-            fragment.setArguments(bundle);*/
             fragment.setCardViewModel(cardViewModel);
             fragment.setOnCardStatusChangeListener(onCardFragmentStateChange);
             fragmentList.add(fragment);

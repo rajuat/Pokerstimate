@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.itservz.android.pokerstimate.model.CardStatus;
 import com.itservz.android.pokerstimate.model.CardViewModel;
-import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 import com.itservz.android.pokerstimate.widgets.CardView;
 
 
@@ -31,7 +30,6 @@ public class CardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //cardViewModel = (CardViewModel) this.getArguments().getSerializable("CardViewModel");
         setListeners();
     }
 

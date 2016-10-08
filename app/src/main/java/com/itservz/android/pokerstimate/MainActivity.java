@@ -11,9 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.itservz.android.pokerstimate.fonts.MyFont;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
@@ -104,7 +101,6 @@ public class MainActivity extends FragmentActivity {
     public void showGridFragment() {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_CARD_GRID_FRAGMENT);
         if(fragment != null){
-            Log.d(TAG_LOG, "Drawer called from grid");
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
         getSupportFragmentManager().beginTransaction()
@@ -142,6 +138,4 @@ public class MainActivity extends FragmentActivity {
             }
         }
     }
-
-
 }
