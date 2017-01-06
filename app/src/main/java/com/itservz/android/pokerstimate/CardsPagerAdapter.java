@@ -73,6 +73,4 @@ public class CardsPagerAdapter extends FragmentStatePagerAdapter {
         }
     }
 
-
-
 }
