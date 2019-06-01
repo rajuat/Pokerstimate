@@ -20,12 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.itservz.android.pokerstimate.core.Dealer;
 import com.itservz.android.pokerstimate.core.DealerFactory;
-import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 
 public class CardListFragment extends Fragment {
     private static final String TAG_LOG = "CardListFragment";
@@ -41,13 +37,6 @@ public class CardListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_card_list, container, false);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
-
-        //Admob
-        AdView mAdView = (AdView) view.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder()
-                //.addTestDevice("A0A3D2227CBAA74DAC3C250E4861EED3")
-                .build();
-        mAdView.loadAd(adRequest);
 
         //drawer starts
         final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());

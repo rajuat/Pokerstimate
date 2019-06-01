@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.MobileAds;
 import com.itservz.android.pokerstimate.fonts.MyFont;
 import com.itservz.android.pokerstimate.sensor.ShakeDetector;
 
@@ -30,9 +29,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG_LOG, "onCreate");
-
-        //MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713"); test
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-7027483312186624~8107159399");
 
         MyFont.initiazedFont(getApplicationContext());
         // ShakeDetector initialization
